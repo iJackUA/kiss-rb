@@ -63,17 +63,17 @@ end
 
 class CreatePost < Kiss::Operation
   def call(params)
-    res = with do
+    res = with {
       sig :ok, :post_params, :smth, op.validate(params[:post])
       sig :ok, :post, :smth2, op.save(post_params, params[:wanna_fail])
       sig :ok, :notification, :smth3, op.notify(post[:id], smth, smth2)
 
       puts "Notifiucation: #{notification}"
-    end.do do
+    }.do {
       puts 'DO!'
-    end.else do
+    }.else {
       puts 'ELSE!'
-    end.call
+    }.call
 
     puts '-RES-'
     puts res
